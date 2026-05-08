@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrenamiento Contabilidad</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        success: '#36D399',
+                        pending: '#F87272',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800 min-h-screen">
+
+    <!-- Pantalla de Bienvenida -->
+    <div id="welcomeScreen" class="fixed inset-0 bg-white z-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div class="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-8 border border-gray-100 my-8">
+            <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Material de Entrenamiento</h2>
+            
+            <div class="bg-blue-50 border border-blue-100 rounded-xl p-5 mb-8 text-gray-700 text-justify leading-relaxed">
+                <p>El propósito de este enlace es para recibir el entrenamiento para los procedimientos de la contabilidad de la congregación cristiana de los testigos de Jehová. Y se almacenará el progreso de los vídeos vistos. Todos los vídeos son marcas registradas por jw.org y no se debe compartir este enlace, únicamente con siervos nombrados.</p>
+            </div>
+
+            <button onclick="startApp()" 
+                class="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-4 rounded-lg transition shadow-lg text-lg">
+                ⚡ Iniciar
+            </button>
+        </div>
+    </div>
+
+    <!-- Pantalla de Selección de Rol -->
+    <div id="roleScreen" class="container mx-auto px-4 py-8 hidden">
+        <header class="text-center mb-10">
+            <h1 class="text-[clamp(1.8rem,5vw,2.5rem)] font-bold text-gray-800 mb-3">Material de Entrenamiento</h1>
+            <p class="text-gray-500 text-lg">Selecciona tu cargo para ver los videos correspondientes</p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
+            <button onclick="selectRole('siervo', 'Siervo de cuentas', [1,2,3,4,5,6,8,10,11,12,14,15,16,17,18,19,20,21,22,23,24,25,26,28])" 
+                class="bg-white hover:bg-primary/5 border border-gray-200 rounded-xl p-6 text-left transition-all shadow-sm hover:shadow-md">
+                <h3 class="font-bold text-lg text-primary">Siervo de cuentas</h3>
+                <p class="text-sm text-gray-500">24 videos</p>
+            </button>
+
+            <button onclick="selectRole('secretario', 'Secretario', [1,2,3,4,5,6,8,10,11,12,14,15,16,17,18,19,20,21,22,24,25,26,27,28])" 
+                class="bg-white hover:bg-primary/5 border border-gray-200 rounded-xl p-6 text-left transition-all shadow-sm hover:shadow-md">
+                <h3 class="font-bold text-lg text-primary">Secretario</h3>
+                <p class="text-sm text-gray-500">24 videos</p>
+            </button>
+
+            <button onclick="selectRole('coordinador', 'Coordinador del cuerpo', [1,2,3,4,5,6,10,11,12,16,17,20,21,22,24,28])" 
+                class="bg-white hover:bg-primary/5 border border-gray-200 rounded-xl p-6 text-left transition-all shadow-sm hover:shadow-md">
+                <h3 class="font-bold text-lg text-primary">Coordinador del cuerpo</h3>
+                <p class="text-sm text-gray-500">16 videos</p>
+            </button>
+
+            <button onclick="selectRole('ancianos', 'Cuerpo de ancianos', [1,2,3,4,5,6,10,16,28])" 
+                class="bg-white hover:bg-primary/5 border border-gray-200 rounded-xl p-6 text-left transition-all shadow-sm hover:shadow-md">
+                <h3 class="font-bold text-lg text-primary">Cuerpo de ancianos</h3>
+                <p class="text-sm text-gray-500">9 videos</p>
+            </button>
+
+            <button onclick="selectRole('encargado', 'Encargado / Suplente', [1,2,3,4,5,6,8,10,11,12,16,17,20,24,28])" 
+                class="bg-white hover:bg-primary/5 border border-gray-200 rounded-xl p-6 text-left transition-all shadow-sm hover:shadow-md">
+                <h3 class="font-bold text-lg text-primary">Encargado / Suplente</h3>
+                <p class="text-sm text-gray-500">15 videos</p>
+            </button>
+
+            <button onclick="selectRole('auditor', 'Auditor', [1,2,3,4,5,6,10,16,23,28])" 
+                class="bg-white hover:bg-primary/5 border border-gray-200 rounded-xl p-6 text-left transition-all shadow-sm hover:shadow-md">
+                <h3 class="font-bold text-lg text-primary">Auditor</h3>
+                <p class="text-sm text-gray-500">10 videos</p>
+            </button>
+        </div>
+    </div>
+
+    <!-- Pantalla de Videos -->
+    <div id="videoScreen" class="container mx-auto px-4 py-6 hidden">
+        <header class="flex flex-wrap justify-between items-center mb-6 gap-4">
+            <button onclick="goBack()" class="flex items-center gap-2 text-gray-600 hover:text-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+                Volver
+            </button>
+            <h2 id="roleTitle" class="text-xl font-bold text-gray-800"></h2>
+        </header>
+
+        <!-- Barra de Progreso -->
+        <div class="bg-white rounded-xl shadow-sm p-4 mb-6">
+            <div class="flex justify-between text-sm text-gray-600 mb-2">
+                <span>Progreso</span>
+                <span id="progressText">0 de 0 videos</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div id="progressBar" class="bg-success h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- Reproductor -->
+        <div class="bg-black rounded-2xl overflow-hidden shadow-xl mb-8 aspect-video">
+            <video id="videoPlayer" controls class="w-full h-full object-contain">
+                Tu navegador no soporta el formato de video.
+            </video>
+        </div>
+
+        <div class="flex justify-center gap-4 mb-8">
+            <button id="markBtn" onclick="markCurrentAsWatched()" class="bg-success hover:bg-success/90 text-white px-6 py-3 rounded-lg font-semibold shadow-md transition hidden">
+                ✓ Marcar como visto
+            </button>
+            <button id="nextBtn" onclick="playNext()" class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-semibold shadow-md transition hidden">
+                Siguiente Video ➡️
+            </button>
+        </div>
+
+        <!-- Lista de Videos -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="bg-gray-50 text-gray-500 text-sm">
+                        <tr>
+                            <th class="px-4 py-3 w-16">#</th>
+                            <th class="px-4 py-3">Título</th>
+                            <th class="px-4 py-3 w-24 text-center">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="videoList" class="divide-y divide-gray-100">
+                        <!-- Se llena con JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // === CONFIGURACIÓN ===
+        const VIDEO_BASE_URL = "./"; // Ruta relativa, funciona igual en disco local y en OneDrive
+        
+        const VIDEO_TITLES = {
+            1: "Videos para la contabilidad de la congregación (Introducción)",
+            2: "Funciones y responsabilidades",
+            3: "Resoluciones",
+            4: "Cómo se recogen las donaciones",
+            5: "Las cajas de contribuciones",
+            6: "Saldo de los fondos de la congregación (cuenta bancaria)",
+            7: "Cómo se registra la actividad de la cuenta bancaria en la Hoja de cuentas (S-26)",
+            8: "Cómo se anota la información del Registro de transacción (S-24) en la Hoja de cuentas (S-26)",
+            9: "Cómo abrir y mantener una cuenta bancaria",
+            10: "Saldo de los fondos de la congregación (caja de dinero en efectivo)",
+            11: "Cómo establecer una caja de dinero en efectivo y nombrar a su encargado",
+            12: "Cómo establecer un acuerdo sobre la caja de efectivo",
+            13: "Hacer pagos con una cuenta bancaria",
+            14: "Emisión de cartas de acuse de recibo de donación",
+            15: "Traspaso de fondos con la sucursal (envío y reembolso)",
+            16: "Gastos de la congregación: tipos y aprobaciones",
+            17: "Realizar pagos con la caja de efectivo",
+            18: "Informe mensual de las cuentas de la congregación (S-30)",
+            19: "Proceso para cerrar el mes: cómo completar la Hoja de cuentas (S-26)",
+            20: "Cómo realizar pagos con adelantos de efectivo",
+            21: "Cómo se preparan los archivos de contabilidad de la congregación",
+            22: "Verificación de la correspondencia",
+            23: "Auditorías: funciones y responsabilidades",
+            24: "Transferencia de fondos con la sucursal mediante dinero móvil",
+            25: "Nuevas formas de usar el formulario S-24",
+            26: "Conciliación del extracto bancario",
+            27: "Cómo registrar la actividad de la caja de efectivo en la Hoja de cuentas (S-26)",
+            28: "Cómo rellenar el Informe sobre la auditoría de las cuentas de la congregación (S-25)",
+            29: "Conciliación de la caja de efectivo"
+        };
+
+        let currentRole = {};
+        let currentIndex = 0;
+        let watchedVideos = JSON.parse(localStorage.getItem('watchedVideos') || '{}');
+        const videoPlayer = document.getElementById('videoPlayer');
+
+        // === FUNCIONES DE NAVEGACIÓN ===
+        function startApp() {
+            document.getElementById('welcomeScreen').classList.remove('flex');
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('roleScreen').classList.remove('hidden');
+        }
+
+        function selectRole(key, name, videoList) {
+            currentRole = { key, name, list: videoList };
+            document.getElementById('roleTitle').textContent = name;
+            document.getElementById('roleScreen').classList.add('hidden');
+            document.getElementById('videoScreen').classList.remove('hidden');
+            
+            renderList();
+            updateProgress();
+            playVideo(0);
+        }
+
+        function goBack() {
+            document.getElementById('videoScreen').classList.add('hidden');
+            document.getElementById('roleScreen').classList.remove('hidden');
+        }
+
+        // === REPRODUCCIÓN DE VIDEO ===
+        function playVideo(index) {
+            currentIndex = index;
+            const videoNum = currentRole.list[index];
+            
+            // Genera el nombre exacto del archivo: ej. tca_S_01_r480P.mp4
+            const fileName = `tca_S_${String(videoNum).padStart(2, '0')}_r480P.mp4`;
+            videoPlayer.src = VIDEO_BASE_URL + fileName;
+            
+            // Ocultar botones hasta que termine o se marque manualmente
+            document.getElementById('markBtn').classList.add('hidden');
+            document.getElementById('nextBtn').classList.add('hidden');
+
+            // Resaltar fila activa
+            document.querySelectorAll('#videoList tr').forEach((row, idx) => {
+                if(idx === index) {
+                    row.classList.add('bg-blue-50', 'border-l-4', 'border-primary');
+                } else {
+                    row.classList.remove('bg-blue-50', 'border-l-4', 'border-primary');
+                }
+            });
+
+            // Cuando el video termina automáticamente
+            videoPlayer.onended = () => {
+                markCurrentAsWatched();
+                if (currentIndex < currentRole.list.length - 1) {
+                    document.getElementById('nextBtn').classList.remove('hidden');
+                }
+            };
+        }
+
+        function playNext() {
+            if (currentIndex < currentRole.list.length - 1) {
+                playVideo(currentIndex + 1);
+                videoPlayer.play();
+            }
+        }
+
+        // === GESTIÓN DE PROGRESO ===
+        function markCurrentAsWatched() {
+            const videoNum = currentRole.list[currentIndex];
+            watchedVideos[`${currentRole.key}_${videoNum}`] = true;
+            localStorage.setItem('watchedVideos', JSON.stringify(watchedVideos));
+            
+            updateProgress();
+            renderList();
+
+            // Mostrar botón de siguiente si no es el último
+            if (currentIndex < currentRole.list.length - 1) {
+                document.getElementById('nextBtn').classList.remove('hidden');
+            }
+        }
+
+        function updateProgress() {
+            const total = currentRole.list.length;
+            const count = currentRole.list.filter(num => watchedVideos[`${currentRole.key}_${num}`]).length;
+            const percent = (count / total) * 100;
+            
+            document.getElementById('progressText').textContent = `${count} de ${total} videos`;
+            document.getElementById('progressBar').style.width = `${percent}%`;
+        }
+
+        function renderList() {
+            const listEl = document.getElementById('videoList');
+            listEl.innerHTML = '';
+            
+            currentRole.list.forEach((num, index) => {
+                const isWatched = watchedVideos[`${currentRole.key}_${num}`];
+                const row = document.createElement('tr');
+                row.className = `cursor-pointer hover:bg-gray-50 transition-all duration-150 ${isWatched ? 'bg-green-50/50' : ''}`;
+                row.onclick = () => playVideo(index);
+                
+                row.innerHTML = `
+                    <td class="px-4 py-3 font-medium text-gray-600">${num}</td>
+                    <td class="px-4 py-3">${VIDEO_TITLES[num] || 'Video ' + num}</td>
+                    <td class="px-4 py-3 text-center text-lg">
+                        ${isWatched ? '<span class="text-success font-bold" title="Completado">✓</span>' : '<span class="text-gray-300" title="Pendiente">○</span>'}
+                    </td>
+                `;
+                listEl.appendChild(row);
+            });
+        }
+    </script>
+</body>
+</html>
